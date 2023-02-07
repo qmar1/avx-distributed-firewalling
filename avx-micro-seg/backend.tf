@@ -2,7 +2,7 @@ terraform {
   backend "s3" {
     # Replace this with your bucket name!
     bucket  = "qmar-avx-tf-backed-state-2022"
-    key     = "prod-rdy/avx-microseg/avx-transit-spk-mc/terraform.tfstate"
+    key     = "prod-rdy/avx-microseg/avx-micro-seg/terraform.tfstate"
     region  = "us-east-1"
     profile = "kumar"
 
@@ -12,4 +12,3 @@ terraform {
 
   }
 }
-

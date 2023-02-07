@@ -12,7 +12,6 @@ variable "ctrl_psswd" {
   type = string
 }
 
-
 variable "aws_xt_local_as_num" {
   default     = 65500
   type        = string
@@ -63,16 +62,7 @@ locals {
     "cloud_type"      = module.sp-aw-apne2-01.vpc.cloud_type
   }
 
-  sp-aw-aps1-01-vpc_info = {
-    "vpc_id"          = module.sp-aw-aps1-01.vpc.vpc_id
-    "vpc_name"        = module.sp-aw-aps1-01.vpc.name
-    "vpc_region"      = module.sp-aw-aps1-01.vpc.region
-    "cloud_type"      = module.sp-aw-aps1-01.vpc.cloud_type
-    "pvt_subnet_info" = module.sp-aw-aps1-01.vpc.private_subnets
-    "pub_subnet_info" = module.sp-aw-aps1-01.vpc.public_subnets
-  }
-
-  sp-az-wus2-01-vpc_info = {
+    sp-az-wus2-01-vpc_info = {
     "vpc_id"          = module.sp_az_wus2_01.vpc.vpc_id
     "vpc_name"        = module.sp_az_wus2_01.vpc.name
     "vpc_region"      = module.sp_az_wus2_01.vpc.region

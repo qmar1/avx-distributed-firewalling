@@ -3,7 +3,7 @@
 
 module "aws_xt_apne2_01" {
   source  = "terraform-aviatrix-modules/mc-transit/aviatrix"
-  version = "2.3.0"
+  version = "2.4.1"
 
   cloud         = "AWS"
   region        = "ap-northeast-2"
@@ -43,7 +43,7 @@ module "firenet_pan_01" {
 
 module "az_xt_wus2_01" {
   source  = "terraform-aviatrix-modules/mc-transit/aviatrix"
-  version = "2.3.0"
+  version = "2.4.1"
 
   cloud         = "Azure"
   region        = "West US 2"
@@ -75,7 +75,7 @@ module "az_xt_wus2_01" {
   region        = "europe-west2"
   cidr          = "10.141.0.0/16"
   account       = "qmar-gcp-primary"
-  insane_mode   = true
+  insane_mode   = false
   instance_size = "n1-highcpu-4" #Non-default value required, as minimum instance size for Insane Mode is c5.large
 
 
@@ -114,7 +114,7 @@ module "az_xt_wus2_01" {
 module "sp-aw-aps1-01" {
   # Mumbai region
   source  = "terraform-aviatrix-modules/mc-spoke/aviatrix"
-  version = "1.4.1"
+  version = "1.5.0"
 
   cloud      = "AWS"
   name       = "sp-aw-aps1-01"
@@ -125,7 +125,7 @@ module "sp-aw-aps1-01" {
 
   # optional 
   #  network_domain = var.domain_list[length(var.domain_list) - 1] # coreInfra domain
-  network_domain = var.domain_list[2] # Prod domain
+  network_domain = aviatrix_segmentation_network_domain.nw_seg_domains["${var.domain_list[2]}"].domain_name # Prod domain
   single_az_ha   = false
   insane_mode    = false
   instance_size  = "t3.medium"
@@ -137,7 +137,7 @@ module "sp-aw-aps1-01" {
 
 module "sp-aw-apne2-01" {
   source  = "terraform-aviatrix-modules/mc-spoke/aviatrix"
-  version = "1.4.1"
+  version = "1.5.0"
 
   cloud      = "AWS"
   name       = "sp-aw-apne2-01"
@@ -146,7 +146,7 @@ module "sp-aw-apne2-01" {
   account    = "qmar-aws-primary"
   transit_gw = module.aws_xt_apne2_01.transit_gateway.gw_name
   #  network_domain = var.domain_list[length(var.domain_list) - 1] # CoreInfra Domain
-  network_domain = var.domain_list[2] # prod domain
+  network_domain = aviatrix_segmentation_network_domain.nw_seg_domains["${var.domain_list[2]}"].domain_name # prod domain
   # optional 
   #security_domain = ""
   single_az_ha   = false
@@ -159,7 +159,7 @@ module "sp-aw-apne2-01" {
 # Azure Spoke with insane mode
 module "sp_az_wus2_01" {
   source  = "terraform-aviatrix-modules/mc-spoke/aviatrix"
-  version = "1.4.1"
+  version = "1.5.0"
 
   cloud      = "Azure"
   name       = "sp-az-wus2-01"
@@ -168,7 +168,7 @@ module "sp_az_wus2_01" {
   account    = "qmar-az-primary"
   transit_gw = module.az_xt_wus2_01.transit_gateway.gw_name
   #network_domain = var.domain_list[length(var.domain_list) - 1] # coreInfra Domain
-  network_domain = var.domain_list[2] # prod domain
+  network_domain = aviatrix_segmentation_network_domain.nw_seg_domains["${var.domain_list[2]}"].domain_name # prod domain
   single_az_ha   = false
   insane_mode    = false
   #  instance_size  = "Standard_D3_v2"
@@ -180,7 +180,7 @@ module "sp_az_wus2_01" {
 # Azure spoke no insance mode 
 module "sp_az_eus2_01" {
   source  = "terraform-aviatrix-modules/mc-spoke/aviatrix"
-  version = "1.4.1"
+  version = "1.5.0"
 
   cloud      = "Azure"
   name       = "sp-az-eus2-01"
@@ -189,7 +189,7 @@ module "sp_az_eus2_01" {
   account    = "qmar-az-primary"
   transit_gw = module.az_xt_wus2_01.transit_gateway.gw_name
   #  network_domain = var.domain_list[length(var.domain_list) - 1] # coreInfra Domain
-  network_domain = var.domain_list[2] # prod domain
+  network_domain = aviatrix_segmentation_network_domain.nw_seg_domains["${var.domain_list[2]}"].domain_name # prod domain
   single_az_ha   = false
   insane_mode    = false
   #  instance_size  = ""
@@ -203,12 +203,6 @@ module "sp_az_eus2_01" {
 
 
 
-# Creating Network segmentation Domains 
-
-resource "aviatrix_segmentation_network_domain" "nw_seg_domains" {
-  for_each    = toset(var.domain_list)
-  domain_name = each.value
-}
 
 # Create Transit Peering (Full Mesh)
 module "transit-peering" {
@@ -218,6 +212,15 @@ module "transit-peering" {
   transit_gateways = [
     module.aws_xt_apne2_01.transit_gateway.gw_name,
     module.az_xt_wus2_01.transit_gateway.gw_name
-  
+
   ]
 }
+
+# Creating Network segmentation Domains 
+
+resource "aviatrix_segmentation_network_domain" "nw_seg_domains" {
+
+  for_each    = toset(var.domain_list)
+  domain_name = each.value
+}
+
