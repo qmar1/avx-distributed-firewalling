@@ -30,7 +30,6 @@ override.tf.json
 # example: *tfplan*
 
 # Other Ignore**
-todo.txt
 *.log
 **/.git/*
 .DS_Store
