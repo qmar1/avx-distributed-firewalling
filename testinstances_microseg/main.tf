@@ -1,11 +1,11 @@
 # AWS Test Instances
 # AWS Private subnet resources 
-# Instances in Prod VPC for DB instances
+# Instances in Prod VPC 
 
 module "aws_testinst_sp-aw-apne2-01-vpc_info" {
 
-  #source = "github.com/qmar1/terraform-modules.git//aws-testinstances"
-  source = "../../../modules/aws-testinstances"
+  source = "github.com/qmar1/terraform-modules.git//aws-testinstances"
+  #  source = "../../../modules/aws-testinstances"
   providers = {
     aws = aws.ap-northeast-2 # Needs to change if deploying VPC in a different region
   }
@@ -29,12 +29,12 @@ module "aws_testinst_sp-aw-apne2-01-vpc_info" {
 }
 
 # AWS private subnet resources 
-# Instances in Prod VPC for web_app instances
+# Instances in Dev VPC for web_app instances
 
 module "aws_testinst_sp-aw-aps1-01-vpc" {
 
-#  source = "github.com/qmar1/terraform-modules.git//aws-testinstances"
-  source = "../../../modules/aws-testinstances"
+  source = "github.com/qmar1/terraform-modules.git//aws-testinstances"
+  #  source = "../../../modules/aws-testinstances"
 
   providers = {
     aws = aws.ap-south-1 # Needs to change if deploying VPC in a different region
@@ -61,8 +61,8 @@ module "aws_testinst_sp-aw-aps1-01-vpc" {
 # One Jump host per VPC
 module "jump-host-sp-aw-aps1-01-vpc" {
 
-  #source = "github.com/qmar1/terraform-modules.git//aws-testinstances"
-  source = "../../../modules/aws-testinstances"
+  source = "github.com/qmar1/terraform-modules.git//aws-testinstances"
+  #  source = "../../../modules/aws-testinstances"
   providers = {
     aws = aws.ap-south-1 # Needs to change if deploying VPC in a different region
   }
@@ -88,8 +88,8 @@ module "jump-host-sp-aw-aps1-01-vpc" {
 
 module "jump-host-sp-aw-apne2-01-vpc" {
 
-  #source = "github.com/qmar1/terraform-modules.git//aws-testinstances"
-  source = "../../../modules/aws-testinstances"
+  source = "github.com/qmar1/terraform-modules.git//aws-testinstances"
+  #  source = "../../../modules/aws-testinstances"
   providers = {
     aws = aws.ap-northeast-2 # Needs to change if deploying VPC in a different region
   }
@@ -127,8 +127,8 @@ module "az_linux_test_insts" {
   for_each = {
     for indx, subnet in local.az_test_inst_info : "test-inst-${subnet.region}-${indx}" => subnet
   }
-
-  source              = "../../../modules/az-testinstances/"
+  source = "github.com/qmar1/terraform-modules.git//az-testinstances"
+  #  source              = "../../../modules/az-testinstances/"
   resource_group_name = azurerm_resource_group.arm_rg.name
   vnet_subnet_id      = each.value.pvt_sub_id
 

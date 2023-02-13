@@ -54,9 +54,10 @@ locals {
 
   az_intraVPC_vpc_info = flatten([for vpc in local.all_az_vpc_keys :
     {
+      region  = local.remote_data[vpc].vpc_region
       vpc_id  = local.remote_data[vpc].vpc_id
       account = var.az_account_name
-      region  = local.remote_data[vpc].vpc_region
+      
     }
   ])
 

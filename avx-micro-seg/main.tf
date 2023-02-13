@@ -33,20 +33,8 @@ resource "aviatrix_distributed_firewalling_intra_vpc" "intraVPC_dfw" {
   }
 }
  */
-/* resource "aviatrix_app_domain" "app_domain_1" {
 
-  name = "prod-appd"
-  selector {
-    match_expressions {
-      type = "vm"
-      tags = {
-        Role = "prod"
-      }
-    }
-  }
-}
-
-resource "aviatrix_app_domain" "app_domain_2" {
+/* resource "aviatrix_app_domain" "app_domain_2" {
   name = "dev-appd"
   selector {
     match_expressions {
@@ -56,8 +44,8 @@ resource "aviatrix_app_domain" "app_domain_2" {
       }
     }
   }
-} */
-
+} 
+ */
 # Aviatrix VPC based smart groups
 
 /* resource "aviatrix_app_domain" "app_domain_1" {

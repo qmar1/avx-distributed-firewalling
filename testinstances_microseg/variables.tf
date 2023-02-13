@@ -95,7 +95,7 @@ variable "az_vm_jmp_hst_hostname" {
 }
 
 variable "nb_inst_per_subnet" {
-  description = "Number of Instances to be deployed per pvt instance"
+  description = "Number of Instances to be deployed per pvt subnet"
   type        = number
   default     = 1
 }
